@@ -1,0 +1,6 @@
+{"level":"info","message":"onRequest - WORKSPACE_URI:file:///c%3A/Users/bruno/Paradigma-Objetos","timestamp":"2024-08-23T01:23:30.254Z"}
+{"level":"info","message":"onRequest - completionItem/resolve","timestamp":"2024-08-23T01:23:45.860Z"}
+{"level":"info","message":"onRequest - STRONG_FILES_CHANGED:c:\\Users\\bruno\\Paradigma-Objetos\\Ejercicios\\PrimerPractica.wlk","timestamp":"2024-08-23T01:39:04.240Z"}
+{"level":"info","message":"⌛ Building environment","timeElapsed":134,"timestamp":"2024-08-23T01:39:04.375Z"}
+{"level":"info","message":"onRequest - WORKSPACE_URI:file:///c%3A/Users/bruno/Paradigma-Objetos","timestamp":"2024-08-23T01:39:04.485Z"}
+{"level":"info","message":"Removing diagnostics from \\Users\\bruno\\Paradigma-Objetos\\Ejercicios\\PrimerPractica.wlk","timestamp":"2024-08-23T01:39:04.541Z"}
