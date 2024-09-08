@@ -1,0 +1,53 @@
+import wollok.game.*
+import example.*
+
+program PepitaJuego {
+    game.title("Juego Pepita")
+    game.height(15)
+    game.width(30)
+    game.boardGround("fondo.jpg")
+
+    game.addVisual(pepita)
+
+    keyboard.right().onPressDo({
+        pepita.position(pepita.position().right(1))
+        pepita.volar()
+    })
+
+    keyboard.left().onPressDo({
+        pepita.position(pepita.position().left(1))
+        pepita.volar()
+    })
+
+    keyboard.up().onPressDo({
+        pepita.position(pepita.position().up(1))
+        pepita.volar()
+    })
+
+    keyboard.space().onPressDo({
+        game.say(pepita, 
+        if (pepita.estaCansada()) "Estoy cansado Jefe"
+        else "Estoy para volar"
+        )
+    })
+
+    keyboard.c().onPressDo({
+        if(not game.colliders(pepita).isEmpty()){
+            pepita.comer(game.colliders(pepita).first())
+            game.removeVisual(game.colliders(pepita).fist())
+            game.say(pepita, "comi")
+        }
+        else game.say(pepita, "no hay nada")
+    })
+
+    game.onTick(2000, "movimiento", {
+        pepita.position(pepita.position().down(1))
+    })
+
+    game.start()
+
+    game.addVisual(alpiste)
+    game.addVisual(manzana)
+
+}
+

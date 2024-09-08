@@ -1,0 +1,15 @@
+import PracticaManzana.*
+
+describe "TestManzana" {
+
+test "Maximo de calorias" {
+    10.times { _ => manzana.madurar() }
+    assert.equals(manzana.energiaQueOtorga(), 100)
+}
+
+test "Minimo de calorias" {
+    16.times { _ => manzana.madurar() }
+    assert.equals(manzana.energiaQueOtorga(), 0)
+}
+
+}
