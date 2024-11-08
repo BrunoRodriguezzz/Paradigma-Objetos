@@ -1,173 +1,108 @@
-class ArmaFilo {
-    const filo
-    const longitud
-    method poder() = filo*longitud
+// Parcial planetas
 
-    // method establecerFilo(nuevoFilo) {  //No hace falta porq cuando creemos el objeto le damos los valores
-    //   if(nuevoFilo.between(0, 1)){
-    //     filo = nuevoFilo
-    //   }
-    // }
+class Persona{
+    var property monedas = 20
+    var edad
+
+    method recursos() = monedas
+
+    method gastarmonedas(cantidad){
+        if(monedas-cantidad < 0){
+            //Error
+        }
+        else monedas -= cantidad
+    }
+
+    method conseguirmonedas(cantidad){
+        monedas += cantidad
+    }
+
+    method esDestacado() =  edad.between(18, 65) || monedas > 30
+
+    method cumplirAnios(){edad += 1}
 }
 
-class ArmaContundente {
-    const peso
-    method poder() = peso
+class Muralla{
+    var property longitud
+    method valor() = 10*longitud
 }
 
-class Casco {
-    method armadura(peleador) = 5     //Recibe el peleador para que sea polimorfico( casco - escudo )
+class Museo{
+    var property superficie
+    var property importancia
+    method valor() = superficie*importancia
 }
 
-class Escudo {
-    method armadura(peleador) = 5 + 0.1* peleador.destreza()
+class Planeta{
+    const personas
+    const construcciones
+
+    method agregarContruccion(construccion) {construcciones.add(construccion)}
+    method delegacionDiplomatica() = personas.filter({p => p.esDestacado() || p == self.masmonedas()})
+    method masmonedas() = personas.max({p => p.monedas()})
+    method esFamosos() = construcciones.all({c => c.valor()>100})
+    method estaPersona(persona) = personas.contains(persona)
 }
 
-class GladiadorMirmilon {
-    var vida = 100
-    const arma
-    var armadura
+class Productor inherits Persona(){
+    const tecnicas = ["cultivo"]
 
-    const fuerza
-    method fuerza() = fuerza
-    method destreza() = 15
+    method aprenderTecnica(tecnica){tecnicas.add(tecnicas)}
+    override method recursos() = monedas*tecnicas.size()
+    override method esDestacado() = super() || tecnicas.size() > 5
 
-    method cambiarArmadura(nuevaArmadura) {
-        armadura = nuevaArmadura
+    method trabajar(tecnica, tiempo) {
+        if(tecnicas.contains(tecnica)){
+            monedas += 3*tiempo
+        }
+        else monedas -= 1
     }
 
-    method estoyVivo() = vida > 0
-
-    // Atacar
-
-    method poderAtaque() = fuerza + arma.poder()
-
-    method atacar(enemigo) {
-        const damage = self.poderAtaque() - enemigo.defensa()
-        enemigo.perderVida(damage)
-    }
-
-    method perderVida(cantidad) {
-        if(vida - cantidad <= 0) vida = 0
-        else vida -= cantidad
-    }
-
-    method defensa() = armadura.armadura(self) + self.destreza()
-
-    // Pelea
-
-    method pelear(enemigo) {
-        self.atacar(enemigo.campeon())
-        enemigo.campeon().atacar(self)
-    }
-
-    // Grupo
-
-    method crearGrupo(compa) {
-       const grupo = new Grupo(nombre = self.nombreGrupo(compa))
-       grupo.agregarMiembros(self)
-       grupo.agregarMiembro(compa)
-       return grupo
-    }
-
-    method nombreGrupo(compa) = "mirmiolandia"
-
-    method campeon() = self
-
-    method curar() {vida = 100}
-}
-
-class GladiadorDimacherus {
-    var vida = 100
-    const armas = []
-
-    method fuerza() = 10
-    var destreza
-    method destreza() = destreza
-
-    method perderVida(cantidad) {
-        if(vida - cantidad <= 0) vida = 0
-        else vida -= cantidad
-    }
-
-    method agregarArma(arma) {
-        armas.add(arma)
-    }
-
-    method quitarArma(arma) {
-        armas.remove(arma)
-    }
-
-    method estoyVivo() = vida > 0
-
-    // Atacar
-
-    method atacar(enemigo) {
-        destreza += 1
-        const damage = self.poderAtaque() - enemigo.defensa()
-        enemigo.perderVida(damage)
-    }
-
-    method poderAtaque() = armas.sum({arma => arma.poder()}) + self.fuerza()
-    method defensa() = destreza/2
-
-    // Pelea
-
-    method pelear(enemigo) {
-        self.atacar(enemigo.campeon())
-        enemigo.campeon().atacar(self)
-    }
-
-    // Grupo
-
-    method crearGrupo(compa) {
-       const grupo = new Grupo(nombre = self.nombreGrupo(compa))
-       grupo.agregarMiembros(self)
-       grupo.agregarMiembro(compa)
-       return grupo
-    }
-
-    method nombreGrupo(compa) = "D-" + (self.poderAtaque() + compa.poderAtaque())
-
-    method campeon() = self
-
-    method curar() {vida = 100}
-}
-
-class Grupo {
-    const miembros = []
-    const nombre
-    var cantPeleas = 0
-
-    method agregarMiembro(miem) {
-        miembros.add(miem)
-    }
-
-    method quitarMiembro(miem) {
-        miembros.remove(miem)
-    }
-
-    method campeon() {
-        const candidatos = miembros.filter({campeon => campeon.estoyVivo()})
-        return candidatos.max({campeon => campeon.poder()})
-    }
-
-    method pelear(enemigo) {
-      3.times(self.campeon().pelear(enemigo.campeon()))
-      cantPeleas += 1
-    }
-
-    method curar() {
-        miembros.forEach({campeon => campeon.curar()})
+    method trabajarPlaneta(planeta, tiempo){
+        if(planeta.estaPersona(self) && !tecnicas.isEmpty()){
+            self.trabajar(tecnicas.last(), tiempo)
+        }
     }
 }
 
-object coliseo {
-    method combatir(enemigo1,enemigo2) {
-        enemigo1.pelear(enemigo2)
-    }
+class Constructor inherits Persona(){
+    const construccionesHechas
+    const origen
 
-    method curar(entidad) {
-        entidad.curar()
+    override method recursos() = monedas + 10*construccionesHechas.size()
+    override method esDestacado() = construccionesHechas.size() > 5
+    method trabajarPlaneta(planeta, tiempo) {
+        const queConstrui = origen.queConstruyo(self, tiempo)
+        planeta.agregarContruccion(queConstrui)
+        construccionesHechas.add(queConstrui)
+        self.gastarmonedas(5)
     }
 }
+
+object montania{
+    method queContruyo(persona, tiempo) {
+        const nuevaMuralla = new Muralla(longitud = tiempo/2)
+        return nuevaMuralla
+        }  
+}
+
+object costa{
+    method queConstruyo(persona, tiempo) {
+        const nuevoMuseo = new Museo(superficie = tiempo, importancia = 1)
+        return nuevoMuseo
+    }
+}
+
+object llanura{
+    method queConstruyo(persona, tiempo){
+        if(persona.esDestacado()){
+            const nuevoMuseo = new Museo(superficie = tiempo, importancia = persona.proporcional())
+            return nuevoMuseo
+        }
+        else {
+            const nuevaMuralla = new Muralla(longitud =  tiempo/2)
+            return nuevaMuralla
+        }
+    }
+}
+
